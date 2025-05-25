@@ -69,6 +69,20 @@
       text-align: center;
       font-weight: bold;
       font-size: 20px;
+      margin-bottom: 5px;
+    }
+    .admin-desc {
+      text-align: center;
+      font-style: italic;
+      color: #405bb5;
+      margin-bottom: 15px;
+    }
+    .made-by {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 14px;
+      color: #777;
+      font-style: italic;
     }
     .accordion-item {
       margin-bottom: 20px;
@@ -131,12 +145,28 @@
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      flex-direction: column;
+      text-align: center;
+      color: #405bb5;
+      font-weight: bold;
+      font-size: 18px;
     }
     #team img {
-      width: 50px;
-      height: 50px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
-      margin-right: 15px;
+      margin-bottom: 8px;
+      border: 2px solid #405bb5;
+      object-fit: cover;
+    }
+    #team-desc {
+      font-style: italic;
+      color: #2a3a7a;
+      margin-bottom: 25px;
+      text-align: center;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
     }
   </style>
 </head>
@@ -155,6 +185,8 @@
   <h2>Admin</h2>
   <img src="https://i.imgur.com/f6n8V0T.jpg" alt="Admin" class="admin-pic">
   <p class="admin-name">Aryan.x3</p>
+  <p class="admin-desc">Dedicated to automating messaging tasks seamlessly and efficiently.</p>
+  <p class="made-by">Made by Aryan</p>
 </section>
 
 <section id="active">
@@ -297,85 +329,96 @@
 
 <section id="team">
   <h2>My Team</h2>
+  <p id="team-desc">Our dedicated team ensures smooth operation and constant innovation to bring you the best messaging automation experience.</p>
   <ul>
-    <li><img src="https://i.imgur.com/f6n8V0T.jpg" alt="Aryan.x3"> Aryan.x3</li>
-    <li><img src="https://i.imgur.com/s7dDH2I.jpg" alt="Varun"> Varun</li>
+    <li>
+      <img src="https://i.imgur.com/f6n8V0T.jpg" alt="Aryan" />
+      Aryan.x3
+      <div style="font-style: italic; font-size: 14px; color: #3a4a8a; margin-top: 4px;">Lead Developer & Automation Expert</div>
+    </li>
+    <li>
+      <img src="https://i.imgur.com/6zWzPCh.jpg" alt="Team Member" />
+      Ali.khan
+      <div style="font-style: italic; font-size: 14px; color: #3a4a8a; margin-top: 4px;">Backend Specialist</div>
+    </li>
+    <li>
+      <img src="https://i.imgur.com/Dl4FpmJ.jpg" alt="Team Member" />
+      Saira
+      <div style="font-style: italic; font-size: 14px; color: #3a4a8a; margin-top: 4px;">Frontend Designer & UX</div>
+    </li>
   </ul>
+  <p class="made-by">Made by Aryan</p>
 </section>
 
 <script>
+  function toggleAccordion(elem) {
+    let content = elem.nextElementSibling;
+    content.style.display = content.style.display === 'block' ? 'none' : 'block';
+  }
+
   const tabs = document.querySelectorAll('.tab-btn');
+  const sections = document.querySelectorAll('section');
+
   tabs.forEach(tab => {
     tab.addEventListener('click', () => {
       tabs.forEach(t => t.classList.remove('active'));
+      sections.forEach(s => s.classList.remove('active'));
+
       tab.classList.add('active');
-      const tabId = tab.dataset.tab;
-      document.querySelectorAll('section').forEach(sec => {
-        sec.classList.remove('active');
-        if (sec.id === tabId) sec.classList.add('active');
-      });
+      document.getElementById(tab.dataset.tab).classList.add('active');
     });
   });
 
-  function toggleAccordion(element) {
-    const content = element.nextElementSibling;
-    const all = element.closest('section').querySelectorAll('.accordion-content');
-    all.forEach(c => c.style.display = c === content ? (c.style.display === 'block' ? 'none' : 'block') : 'none');
-  }
-
   function convTokenTypeChange() {
-    const sel = document.getElementById('convTokenType');
-    const input = document.getElementById('convTokenInput');
+    const type = document.getElementById('convTokenType').value;
     const label = document.getElementById('convTokenLabel');
-    input.type = sel.value === 'multi' ? 'file' : 'text';
-    label.textContent = sel.value === 'multi' ? 'Upload Token File' : 'Enter Token';
-    input.value = '';
+    const input = document.getElementById('convTokenInput');
+    if(type === 'multi') {
+      label.textContent = 'Upload Token File';
+      input.type = 'file';
+      input.value = '';
+    } else {
+      label.textContent = 'Enter Token';
+      input.type = 'text';
+    }
   }
 
   function postCookieTypeChange() {
-    const sel = document.getElementById('postCookieType');
-    const input = document.getElementById('postCookieInput');
+    const type = document.getElementById('postCookieType').value;
     const label = document.getElementById('postCookieLabel');
-    input.type = sel.value === 'multi' ? 'file' : 'text';
-    label.textContent = sel.value === 'multi' ? 'Upload Cookie File' : 'Enter Cookie';
-    input.value = '';
+    const input = document.getElementById('postCookieInput');
+    if(type === 'multi') {
+      label.textContent = 'Upload Cookie File';
+      input.type = 'file';
+      input.value = '';
+    } else {
+      label.textContent = 'Enter Cookie';
+      input.type = 'text';
+    }
   }
 
   function toggleMessageInput(context) {
-    const type = document.getElementById(message_type_${context}).value;
-    document.getElementById(single_message_${context}).style.display = type === 'single' ? 'block' : 'none';
-    document.getElementById(file_message_${context}).style.display = type === 'file' ? 'block' : 'none';
+    const type = document.getElementById(`message_type_${context}`).value;
+    document.getElementById(`single_message_${context}`).style.display = type === 'single' ? 'block' : 'none';
+    document.getElementById(`file_message_${context}`).style.display = type === 'file' ? 'block' : 'none';
+  }
+
+  // Placeholder functions for backend calls (implement these as needed)
+  function startConversation() {
+    alert('Starting conversation task...');
   }
 
   function startPost() {
-    const cookieInput = document.getElementById('postCookieInput');
-    const delay = document.getElementById('postDelay').value.trim();
-    const postName = document.getElementById('postName').value.trim();
-
-    if (!cookieInput.value) return alert('Please enter cookie(s)');
-    if (!delay) return alert('Please enter delay');
-    if (!postName) return alert('Please enter post name');
-
-    alert(Starting Post:\nCookie: ${cookieInput.value}\nDelay: ${delay}\nPost Name: ${postName});
-  }
-
-  function startConversation() {
-    alert('Start Conversation button clicked');
+    alert('Starting post task...');
   }
 
   function extractToken() {
-    alert('Extract Token button clicked');
+    alert('Extract token functionality triggered...');
   }
 
   function showGroups() {
-    alert('Show Groups button clicked');
+    alert('Show groups functionality triggered...');
   }
-
-  document.querySelectorAll('input[type="file"]').forEach(input => {
-    input.addEventListener('change', () => {
-      if (input.files.length > 0) alert(Selected: ${input.files[0].name});
-    });
-  });
 </script>
 
 </body>
