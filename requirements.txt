@@ -1,1 +1,1 @@
-pip install requests flask selenium
+pip install requests flask 
